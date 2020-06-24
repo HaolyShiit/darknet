@@ -613,7 +613,9 @@ matrix load_labels_paths(char **paths, int n, char **labels, int k, tree *hierar
     } else {
         // unsupervised learning
         for (i = 0; i < n; ++i) {
-            const int class_id = i / 2;
+            const int img_index = (contrastive) ? (i / 2) : i;
+            const uintptr_t path_p = (uintptr_t)paths[img_index];// abs(random_gen());
+            const int class_id = path_p % k;
             int l;
             for (l = 0; l < k; ++l) y.vals[i][l] = 0;
             y.vals[i][class_id] = 1;
@@ -1920,11 +1922,11 @@ data load_data_augment(char **paths, int n, int m, char **labels, int k, tree *h
     if (use_blur) {
         int i;
         for (i = 0; i < d.X.rows; ++i) {
-            if (random_gen() % 2) {
+            if (random_gen() % 4 == 0) {
                 image im = make_empty_image(w, h, 3);
                 im.data = d.X.vals[i];
                 int ksize = use_blur;
-                if (use_blur == 1) ksize = 17;
+                if (use_blur == 1) ksize = 15;
                 image blurred = blur_image(im, ksize);
                 free_image(im);
                 d.X.vals[i] = blurred.data;

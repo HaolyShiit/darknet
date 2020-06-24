@@ -227,6 +227,7 @@ convolutional_layer parse_convolutional(list *options, size_params params)
     layer.stretch_sway = stretch_sway;
     layer.angle = option_find_float_quiet(options, "angle", 15);
     layer.grad_centr = option_find_int_quiet(options, "grad_centr", 0);
+    layer.reverse = option_find_float_quiet(options, "reverse", 0);
 
     if(params.net.adam){
         layer.B1 = params.net.B1;
@@ -1130,6 +1131,7 @@ void parse_net_options(list *options, network *net)
     net->letter_box = option_find_int_quiet(options, "letter_box", 0);
     net->mosaic_bound = option_find_int_quiet(options, "mosaic_bound", 0);
     net->contrastive = option_find_int_quiet(options, "contrastive", 0);
+    net->unsupervised = option_find_int_quiet(options, "unsupervised", 0);
     net->label_smooth_eps = option_find_float_quiet(options, "label_smooth_eps", 0.0f);
     net->resize_step = option_find_float_quiet(options, "resize_step", 32);
     net->attention = option_find_int_quiet(options, "attention", 0);
